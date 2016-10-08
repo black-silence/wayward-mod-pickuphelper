@@ -1,0 +1,15 @@
+{
+	"name": "Pick Up Helper",
+	"description": "Lets you pick items from the pile in front of you in a more organized way.",
+	"version": "1.0.0",
+	"author": "black-silence",
+	"unloadable": true,
+	"files": [
+		"pickuphelper.js"
+	],
+	"hooks": [
+		"OnGameStart",
+		"OnKeyBindPress"
+	],
+	"publishedFileId": "777480456"
+}
