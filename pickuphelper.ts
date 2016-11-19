@@ -1,6 +1,6 @@
 /// <reference path="mod-reference/modreference.d.ts"/>
 
-class Mod extends Mods.Mod {
+export default class Mod extends Mods.Mod {
 
     private pickupHotkey: number;
     private pickupNoItemsMessage: number;
