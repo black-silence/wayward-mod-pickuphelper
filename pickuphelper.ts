@@ -1,6 +1,8 @@
-/// <reference path="mod-reference/modreference.d.ts"/>
+import { KeyBind } from "Enums";
+import { MessageType } from "language/Messages";
+import Mod from "mod/Mod";
 
-export default class Mod extends Mods.Mod {
+export default class PickUpHelper extends Mod {
 
     private pickupHotkey: number;
     private pickupNoItemsMessage: number;
@@ -15,12 +17,6 @@ export default class Mod extends Mods.Mod {
      */
     public onLoad(saveData: any): void {
         this.pickupNoItemsMessage = this.addMessage('pickupNoItems', "There are no items in front of you.");
-    }
-
-    public onUnload(): void {
-    }
-
-    public onSave(): any {
     }
 
     /**
@@ -41,20 +37,20 @@ export default class Mod extends Mods.Mod {
 
         if (key == this.pickupHotkey && $("input:focus").length == 0) {
 
-            if (game.isTileEmpty(player.x + player.direction.x, player.y + player.direction.y, player.z)) {
-                ui.displayMessage(this.pickupNoItemsMessage, MessageType.Bad);
+            if (game.isTileEmpty(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z)) {
+                ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
                 return undefined;
             }
 
-            let tilecontainer = Item.getTileContainer(player.x + player.direction.x, player.y + player.direction.y, player.z);
+            let tilecontainer = itemManager.getTileContainer(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z);
 
             if (ui.isContainerOpen(tilecontainer)) {
                 return undefined;
             }
 
             // The tile may not be empty but that doesn't mean there are items. Could be a chest here.
-            if (Item.getItemsInContainer(tilecontainer).length == 0) {
-                ui.displayMessage(this.pickupNoItemsMessage, MessageType.Bad);
+            if (itemManager.getItemsInContainer(tilecontainer).length == 0) {
+                ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
                 return undefined;
             }
 

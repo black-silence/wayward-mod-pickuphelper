@@ -5,6 +5,7 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
+        "baseUrl": "./mod-reference/definitions",
         "listFiles": true
     }
 }
