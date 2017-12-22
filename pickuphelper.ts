@@ -1,6 +1,6 @@
-import { KeyBind } from "Enums";
 import { MessageType } from "language/Messages";
 import Mod from "mod/Mod";
+import { BindCatcherApi } from "newui/BindingManager";
 
 export default class PickUpHelper extends Mod {
 
@@ -8,6 +8,7 @@ export default class PickUpHelper extends Mod {
     private pickupNoItemsMessage: number;
 
     public onInitialize(saveDataGlobal: any): any {
+        this.pickupHotkey = this.addBindable("PuhShowContainer", {key:"G"});
     }
 
     /**
@@ -19,23 +20,9 @@ export default class PickUpHelper extends Mod {
         this.pickupNoItemsMessage = this.addMessage('pickupNoItems', "There are no items in front of you.");
     }
 
-    /**
-     * Called when the game is starting
-     * @param isLoadingSave True if a save game was loaded
-     * @param playedCount The number of times the player has played the game (globally, not per slot)
-     */
-    public onGameStart(isLoadingSave: boolean, playedCount: number): void {
-        this.pickupHotkey = this.addKeyBind("Pick Up Helper", 71); // Default: G
-    }
+    public onBindLoop(bindPressed: true | undefined, api: BindCatcherApi): true | undefined {
 
-    /**
-     * Called when a keybind is pressed
-     * @param keyBind The keybind
-     * @returns False to cancel the keybind press or undefined to use the default logic
-     */
-    public onKeyBindPress(key: KeyBind): boolean {
-
-        if (key == this.pickupHotkey && $("input:focus").length == 0) {
+        if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
 
             if (game.isTileEmpty(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z)) {
                 ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
@@ -55,9 +42,10 @@ export default class PickUpHelper extends Mod {
             }
 
             ui.openContainer(tilecontainer);
+            bindPressed = true;
         }
 
-        return undefined;
+        return bindPressed;
     }
 
 }

@@ -1,0 +1,8 @@
+{
+    "extends": "English",
+    "dictionaries": {
+        "bindable": {
+            "modPickUpHelperPuhShowContainer": "Show items on the ground"
+        }
+    }
+}

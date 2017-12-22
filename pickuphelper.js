@@ -2,15 +2,13 @@ define(["require", "exports", "language/Messages", "mod/Mod"], function (require
     "use strict";
     class PickUpHelper extends Mod_1.default {
         onInitialize(saveDataGlobal) {
+            this.pickupHotkey = this.addBindable("PuhShowContainer", { key: "G" });
         }
         onLoad(saveData) {
             this.pickupNoItemsMessage = this.addMessage('pickupNoItems', "There are no items in front of you.");
         }
-        onGameStart(isLoadingSave, playedCount) {
-            this.pickupHotkey = this.addKeyBind("Pick Up Helper", 71);
-        }
-        onKeyBindPress(key) {
-            if (key == this.pickupHotkey && $("input:focus").length == 0) {
+        onBindLoop(bindPressed, api) {
+            if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
                 if (game.isTileEmpty(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z)) {
                     ui.displayMessage(localPlayer, this.pickupNoItemsMessage, Messages_1.MessageType.Bad);
                     return undefined;
@@ -24,8 +22,9 @@ define(["require", "exports", "language/Messages", "mod/Mod"], function (require
                     return undefined;
                 }
                 ui.openContainer(tilecontainer);
+                bindPressed = true;
             }
-            return undefined;
+            return bindPressed;
         }
     }
     Object.defineProperty(exports, "__esModule", { value: true });

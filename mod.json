@@ -7,11 +7,13 @@
 	"file": "pickuphelper.js",
 	"hooks": [
 		"OnGameStart",
-		"OnKeyBindPress"
+		"OnBindLoop"
 	],
 	"compatibleMinorVersions": [
-		3,
-		4
+		5
+	],
+	"languages": [
+		"lang/english"
 	],
 	"publishedFileId": "777480456"
 }
