@@ -2,7 +2,7 @@ define(["require", "exports", "language/Messages", "mod/Mod"], function (require
     "use strict";
     class PickUpHelper extends Mod_1.default {
         onInitialize(saveDataGlobal) {
-            this.pickupHotkey = this.addBindable("PuhShowContainer", { key: "G" });
+            this.pickupHotkey = this.addBindable("PuhShowContainer", { key: "KeyG" });
         }
         onLoad(saveData) {
             this.pickupNoItemsMessage = this.addMessage('pickupNoItems', "There are no items in front of you.");

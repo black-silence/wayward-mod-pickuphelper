@@ -8,7 +8,7 @@ export default class PickUpHelper extends Mod {
     private pickupNoItemsMessage: number;
 
     public onInitialize(saveDataGlobal: any): any {
-        this.pickupHotkey = this.addBindable("PuhShowContainer", {key:"G"});
+        this.pickupHotkey = this.addBindable("PuhShowContainer", {key:"KeyG"});
     }
 
     /**
