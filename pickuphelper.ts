@@ -41,6 +41,11 @@ export default class PickUpHelper extends Mod {
                 return undefined;
             }
 
+            let tile = game.getTileInFrontOfPlayer(localPlayer);
+            if (game.isOnFire(tile)) {
+                localPlayer.burn()
+            }
+
             ui.openContainer(tilecontainer);
             bindPressed = true;
         }

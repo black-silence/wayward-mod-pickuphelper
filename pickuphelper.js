@@ -21,6 +21,10 @@ define(["require", "exports", "language/Messages", "mod/Mod"], function (require
                     ui.displayMessage(localPlayer, this.pickupNoItemsMessage, Messages_1.MessageType.Bad);
                     return undefined;
                 }
+                let tile = game.getTileInFrontOfPlayer(localPlayer);
+                if (game.isOnFire(tile)) {
+                    localPlayer.burn();
+                }
                 ui.openContainer(tilecontainer);
                 bindPressed = true;
             }
