@@ -9,11 +9,12 @@ define(["require", "exports", "language/Messages", "mod/Mod"], function (require
         }
         onBindLoop(bindPressed, api) {
             if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
-                if (game.isTileEmpty(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z)) {
+                let facing = localPlayer.getFacingPoint();
+                if (game.isTileEmpty(facing.x, facing.y, facing.z)) {
                     ui.displayMessage(localPlayer, this.pickupNoItemsMessage, Messages_1.MessageType.Bad);
                     return undefined;
                 }
-                let tilecontainer = itemManager.getTileContainer(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z);
+                let tilecontainer = itemManager.getTileContainer(facing.x, facing.y, facing.z);
                 if (ui.isContainerOpen(tilecontainer)) {
                     return undefined;
                 }
@@ -21,7 +22,7 @@ define(["require", "exports", "language/Messages", "mod/Mod"], function (require
                     ui.displayMessage(localPlayer, this.pickupNoItemsMessage, Messages_1.MessageType.Bad);
                     return undefined;
                 }
-                let tile = game.getTileInFrontOfPlayer(localPlayer);
+                let tile = localPlayer.getFacingTile();
                 if (game.isOnFire(tile)) {
                     localPlayer.burn();
                 }

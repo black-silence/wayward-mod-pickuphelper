@@ -24,12 +24,13 @@ export default class PickUpHelper extends Mod {
 
         if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
 
-            if (game.isTileEmpty(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z)) {
+            let facing = localPlayer.getFacingPoint();
+            if (game.isTileEmpty(facing.x, facing.y, facing.z)) {
                 ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
                 return undefined;
             }
 
-            let tilecontainer = itemManager.getTileContainer(localPlayer.x + localPlayer.direction.x, localPlayer.y + localPlayer.direction.y, localPlayer.z);
+            let tilecontainer = itemManager.getTileContainer(facing.x, facing.y, facing.z);
 
             if (ui.isContainerOpen(tilecontainer)) {
                 return undefined;
@@ -41,7 +42,7 @@ export default class PickUpHelper extends Mod {
                 return undefined;
             }
 
-            let tile = game.getTileInFrontOfPlayer(localPlayer);
+            let tile = localPlayer.getFacingTile();
             if (game.isOnFire(tile)) {
                 localPlayer.burn()
             }
