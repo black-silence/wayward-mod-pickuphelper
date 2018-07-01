@@ -1,6 +1,7 @@
 import { MessageType } from "language/Messages";
 import Mod from "mod/Mod";
 import { BindCatcherApi } from "newui/BindingManager";
+import { HookMethod } from "mod/IHookHost";
 
 export default class PickUpHelper extends Mod {
 
@@ -20,17 +21,19 @@ export default class PickUpHelper extends Mod {
         this.pickupNoItemsMessage = this.addMessage('pickupNoItems', "There are no items in front of you.");
     }
 
+    @HookMethod
     public onBindLoop(bindPressed: true | undefined, api: BindCatcherApi): true | undefined {
 
         if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
 
-            let facing = localPlayer.getFacingPoint();
-            if (game.isTileEmpty(facing.x, facing.y, facing.z)) {
+            let facing = localPlayer.getFacingTile();
+            if (game.isTileEmpty(facing)) {
                 ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
                 return undefined;
             }
 
-            let tilecontainer = itemManager.getTileContainer(facing.x, facing.y, facing.z);
+            let facingPoint = localPlayer.getFacingPoint()
+            let tilecontainer = itemManager.getTileContainer(facingPoint.x, facingPoint.y, facingPoint.z);
 
             if (ui.isContainerOpen(tilecontainer)) {
                 return undefined;
