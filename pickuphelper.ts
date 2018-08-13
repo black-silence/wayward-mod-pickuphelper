@@ -1,4 +1,4 @@
-import { MessageType } from "language/Messages";
+import { MessageType } from "language/IMessages";
 import Mod from "mod/Mod";
 import { BindCatcherApi } from "newui/BindingManager";
 import { HookMethod } from "mod/IHookHost";
@@ -22,13 +22,14 @@ export default class PickUpHelper extends Mod {
     }
 
     @HookMethod
-    public onBindLoop(bindPressed: true | undefined, api: BindCatcherApi): true | undefined {
+    public onBindLoop(bindPressed: Bindable, api: BindCatcherApi): Bindable {
 
         if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
+            bindPressed = this.pickupHotkey;
 
             let facing = localPlayer.getFacingTile();
             if (game.isTileEmpty(facing)) {
-                ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
+                localPlayer.messages.type(MessageType.Bad).send(this.pickupNoItemsMessage);
                 return undefined;
             }
 
@@ -41,7 +42,7 @@ export default class PickUpHelper extends Mod {
 
             // The tile may not be empty but that doesn't mean there are items. Could be a chest here.
             if (itemManager.getItemsInContainer(tilecontainer).length == 0) {
-                ui.displayMessage(localPlayer, this.pickupNoItemsMessage, MessageType.Bad);
+                localPlayer.messages.type(MessageType.Bad).send(this.pickupNoItemsMessage);
                 return undefined;
             }
 
@@ -51,7 +52,6 @@ export default class PickUpHelper extends Mod {
             }
 
             ui.openContainer(tilecontainer);
-            bindPressed = true;
         }
 
         return bindPressed;

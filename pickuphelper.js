@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "language/Messages", "mod/Mod", "mod/IHookHost"], function (require, exports, Messages_1, Mod_1, IHookHost_1) {
+define(["require", "exports", "language/IMessages", "mod/Mod", "mod/IHookHost"], function (require, exports, IMessages_1, Mod_1, IHookHost_1) {
     "use strict";
     class PickUpHelper extends Mod_1.default {
         onInitialize(saveDataGlobal) {
@@ -15,9 +15,10 @@ define(["require", "exports", "language/Messages", "mod/Mod", "mod/IHookHost"], 
         }
         onBindLoop(bindPressed, api) {
             if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
+                bindPressed = this.pickupHotkey;
                 let facing = localPlayer.getFacingTile();
                 if (game.isTileEmpty(facing)) {
-                    ui.displayMessage(localPlayer, this.pickupNoItemsMessage, Messages_1.MessageType.Bad);
+                    localPlayer.messages.type(IMessages_1.MessageType.Bad).send(this.pickupNoItemsMessage);
                     return undefined;
                 }
                 let facingPoint = localPlayer.getFacingPoint();
@@ -26,7 +27,7 @@ define(["require", "exports", "language/Messages", "mod/Mod", "mod/IHookHost"], 
                     return undefined;
                 }
                 if (itemManager.getItemsInContainer(tilecontainer).length == 0) {
-                    ui.displayMessage(localPlayer, this.pickupNoItemsMessage, Messages_1.MessageType.Bad);
+                    localPlayer.messages.type(IMessages_1.MessageType.Bad).send(this.pickupNoItemsMessage);
                     return undefined;
                 }
                 let tile = localPlayer.getFacingTile();
@@ -34,7 +35,6 @@ define(["require", "exports", "language/Messages", "mod/Mod", "mod/IHookHost"], 
                     localPlayer.burn();
                 }
                 ui.openContainer(tilecontainer);
-                bindPressed = true;
             }
             return bindPressed;
         }

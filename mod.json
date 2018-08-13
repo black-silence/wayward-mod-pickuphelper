@@ -1,9 +1,10 @@
 {
 	"name": "Pick Up Helper",
 	"description": "Lets you pick items from the pile in front of you in a more organized way.",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"author": "black silence",
 	"unloadable": true,
+	"multiplayerCompatible": true,
 	"file": "pickuphelper.js",
 	"compatibleMinorVersions": [
 		6
