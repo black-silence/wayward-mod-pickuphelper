@@ -3,6 +3,9 @@
     "dictionaries": {
         "bindable": {
             "modPickUpHelperPuhShowContainer": "Show items on the ground"
+        },
+        "message": {
+			"modPickUpHelperPickupNoItems": "There are no items in front of you."
         }
     }
 }

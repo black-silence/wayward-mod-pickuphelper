@@ -7,7 +7,7 @@
 	"multiplayerCompatible": true,
 	"file": "pickuphelper.js",
 	"compatibleMinorVersions": [
-		6
+		7
 	],
 	"languages": [
 		"lang/english"

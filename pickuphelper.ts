@@ -1,35 +1,28 @@
-import { MessageType } from "language/IMessages";
+import Register, { Registry } from "mod/ModRegistry";
+import Message from "language/dictionary/Message";
+import { MessageType } from "player/MessageManager";
 import Mod from "mod/Mod";
 import { BindCatcherApi } from "newui/BindingManager";
 import { HookMethod } from "mod/IHookHost";
+import { Bindable } from "Enums";
 
 export default class PickUpHelper extends Mod {
 
-    private pickupHotkey: number;
-    private pickupNoItemsMessage: number;
+    @Register.bindable("PuhShowContainer", { key: "KeyG" })
+    public readonly bindablePuhShowContainer: Bindable;
 
-    public onInitialize(saveDataGlobal: any): any {
-        this.pickupHotkey = this.addBindable("PuhShowContainer", {key:"KeyG"});
-    }
-
-    /**
-     * Called when the mod is loaded called after a player starts/loads a world.
-     * Called before the world is loaded
-     * @param saveData The save data object you previously saved via onSave()
-     */
-    public onLoad(saveData: any): void {
-        this.pickupNoItemsMessage = this.addMessage('pickupNoItems', "There are no items in front of you.");
-    }
+    @Register.message("PickupNoItems")
+    public readonly messagePickupNoItems: Message;
 
     @HookMethod
     public onBindLoop(bindPressed: Bindable, api: BindCatcherApi): Bindable {
 
-        if (api.wasPressed(this.pickupHotkey) && !bindPressed) {
-            bindPressed = this.pickupHotkey;
+        if (api.wasPressed(this.bindablePuhShowContainer) && !bindPressed) {
+            bindPressed = this.bindablePuhShowContainer;
 
             let facing = localPlayer.getFacingTile();
             if (game.isTileEmpty(facing)) {
-                localPlayer.messages.type(MessageType.Bad).send(this.pickupNoItemsMessage);
+                localPlayer.messages.type(MessageType.Bad).send(this.messagePickupNoItems);
                 return undefined;
             }
 
@@ -42,7 +35,7 @@ export default class PickUpHelper extends Mod {
 
             // The tile may not be empty but that doesn't mean there are items. Could be a chest here.
             if (itemManager.getItemsInContainer(tilecontainer).length == 0) {
-                localPlayer.messages.type(MessageType.Bad).send(this.pickupNoItemsMessage);
+                localPlayer.messages.type(MessageType.Bad).send(this.messagePickupNoItems);
                 return undefined;
             }
 
